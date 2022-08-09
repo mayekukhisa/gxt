@@ -1,0 +1,8 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Windows files should use CRLF
+*.bat text eol=crlf
+
+# Binary files should be left untouched
+*.jar binary

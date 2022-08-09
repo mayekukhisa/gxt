@@ -1,0 +1,9 @@
+# Build
+.gradle/
+build/
+
+# Workspace
+.idea/*
+
+# Exceptions to the rules above
+!.idea/codeStyles/
