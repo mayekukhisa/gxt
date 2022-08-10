@@ -4,17 +4,19 @@ Gxt (Git XTension) is a command-line tool that adds convenient actions to common
 
 ## Features
 
-> **Note:** There are currently no features yet. This tool is in its early stages of development.
+-  Override both author and committer dates for commits.
 
 ## Getting started
 
 This guide shows how to obtain a copy of the project and get the tool running on your local machine.
 
-### System requirement
+### System requirements
 
-This project depends on the command-line tool below being available in your environment:
+This project depends on the command-line tools below being available in your environment:
 
 -  `java`
+-  `git`
+-  `date` from GNU coreutils
 
 ### Downloading the codebase
 
@@ -22,7 +24,7 @@ This project depends on the command-line tool below being available in your envi
 
 ### Running the tool
 
-> **Note:** Use PowerShell to run commands on Windows.
+> **Note:** Use Git Bash to run commands on Windows.
 
 1. Navigate into the project's root directory.
 2. Install the project as a distribution:
