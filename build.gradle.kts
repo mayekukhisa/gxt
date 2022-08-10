@@ -28,6 +28,7 @@ repositories {
 
 dependencies {
    implementation("com.github.ajalt.clikt:clikt:3.5.0")
+   implementation("commons-io:commons-io:2.11.0")
 
    testImplementation(kotlin("test"))
    testImplementation(kotlin("test-junit5"))

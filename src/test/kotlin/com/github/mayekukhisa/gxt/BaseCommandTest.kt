@@ -24,18 +24,23 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 internal abstract class BaseCommandTest {
+   private val stderr = System.err
    private val stdout = System.out
+
+   private val errStream = ByteArrayOutputStream()
    val outStream = ByteArrayOutputStream()
 
    abstract val classUnderTest: CliktCommand
 
    @BeforeTest
    fun setUP() {
+      System.setErr(PrintStream(errStream))
       System.setOut(PrintStream(outStream))
    }
 
    @AfterTest
    fun tearDown() {
+      System.setErr(stderr)
       System.setOut(stdout)
    }
 
