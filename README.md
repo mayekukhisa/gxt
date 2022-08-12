@@ -4,6 +4,7 @@ Gxt (Git XTension) is a command-line tool that adds convenient actions to common
 
 ## Features
 
+-  Create first commit on init.
 -  Override both author and committer dates for commits.
 
 ## Getting started
