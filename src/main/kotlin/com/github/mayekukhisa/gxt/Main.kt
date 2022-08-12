@@ -21,6 +21,7 @@ import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.multiple
 import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.mayekukhisa.gxt.Utils.await
 
@@ -82,6 +83,42 @@ abstract class BaseSubcommand(
    val args by argument(name = argsName, help = argsHelp).multiple()
 }
 
+class InitCommand : BaseSubcommand(
+   help = "Create an empty Git repository or reinitialize an existing one",
+   argsName = "INIT_ARGS",
+   argsHelp = "Options and arguments for 'git init'",
+) {
+   private val commitMessage by option(
+      "-m",
+      "--message",
+      metavar = "MESSAGE",
+      help = "Message for initial commit",
+   ).multiple()
+
+   override fun run() {
+      // Execute 'git init' command
+      with(GxtCommand.gitProcessBuilder) {
+         command("git", "init", *args.toTypedArray())
+         start()
+      }.await()
+
+      if (commitMessage.isNotEmpty()) {
+         // Execute 'git add' command
+         with(GxtCommand.gitProcessBuilder) {
+            command("git", "add", ".")
+            start()
+         }.await()
+
+         // Execute 'git commit' command
+         val commitArgs = mutableListOf<String>()
+         commitMessage.forEach { msg ->
+            commitArgs += arrayOf("-m", msg)
+         }
+         CommitCommand().main(commitArgs)
+      }
+   }
+}
+
 class CommitCommand : BaseSubcommand(
    help = "Record changes to the repository",
    argsName = "COMMIT_ARGS",
@@ -124,6 +161,9 @@ class CommitCommand : BaseSubcommand(
 
 fun main(args: Array<String>) {
    GxtCommand()
-      .subcommands(CommitCommand())
+      .subcommands(
+         InitCommand(),
+         CommitCommand(),
+      )
       .main(args)
 }
