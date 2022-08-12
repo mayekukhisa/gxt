@@ -40,6 +40,11 @@ class GxtCommand : CliktCommand(
    companion object {
       const val VERSION = "1.0.0-snapshot"
 
+      val gitProcessBuilder = ProcessBuilder().apply {
+         redirectInput(ProcessBuilder.Redirect.INHERIT)
+         redirectOutput(ProcessBuilder.Redirect.INHERIT)
+      }
+
       /**
        * Terminates the currently running process.
        *
@@ -91,20 +96,16 @@ class CommitCommand : BaseSubcommand(
 
    override fun run() {
       val commitArgs = args.toMutableList()
-      val processBuilder = ProcessBuilder().apply {
-         redirectInput(ProcessBuilder.Redirect.INHERIT)
-         redirectOutput(ProcessBuilder.Redirect.INHERIT)
-      }
 
       // Set author and committer dates
       if (date != null) {
          val timestamp = date!!.formatTimestamp()
-         processBuilder.environment()["GIT_COMMITTER_DATE"] = timestamp
+         GxtCommand.gitProcessBuilder.environment()["GIT_COMMITTER_DATE"] = timestamp
          commitArgs += arrayOf("--date", timestamp)
       }
 
       // Execute 'git commit' command
-      with(processBuilder) {
+      with(GxtCommand.gitProcessBuilder) {
          command("git", "commit", *commitArgs.toTypedArray())
          start()
       }.await()
